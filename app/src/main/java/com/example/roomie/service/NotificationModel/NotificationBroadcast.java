@@ -17,7 +17,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.roomie.R;
-import com.example.roomie.view.NotificationActivity;
+import com.example.roomie.view.pages.NotificationActivity;
 
 
 public class NotificationBroadcast extends BroadcastReceiver {

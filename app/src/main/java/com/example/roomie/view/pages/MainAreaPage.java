@@ -1,11 +1,13 @@
-package com.example.roomie.view;
+package com.example.roomie.view.pages;
 
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,25 +15,28 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.roomie.R;
 import com.example.roomie.model.RoomDB.UserRoomController;
 import com.example.roomie.model.User;
 import com.example.roomie.service.Request.Logout;
+import com.example.roomie.view.fragments.FavoritesFragment;
+import com.example.roomie.view.fragments.MainFragment;
+import com.example.roomie.view.fragments.MessagesFragment;
+import com.example.roomie.view.fragments.ProfileFragment;
+import com.example.roomie.view.fragments.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
-
-
-import java.util.ArrayList;
 
 
 public class MainAreaPage extends AppCompatActivity {
@@ -41,6 +46,7 @@ public class MainAreaPage extends AppCompatActivity {
     UserRoomController userRoomController;
     BottomNavigationView bottomNavigationView;
     FloatingActionButton openSearchButton;
+    FrameLayout frameLayout;
 
 
     @Override
@@ -53,6 +59,8 @@ public class MainAreaPage extends AppCompatActivity {
 
         //pullToRefresh = findViewById(R.id.swipeRefreshLayout);
 
+        frameLayout = (FrameLayout) findViewById(R.id.frameLayout);
+
         openSearchButton = findViewById(R.id.searchButton);
         openSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,14 +72,40 @@ public class MainAreaPage extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setItemIconTintList(null);
 
+        setFragmentToLayout(new MainFragment());
+
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                System.out.println("ITEM_SELECTED" + item.getTitle());
+                Fragment selectedFragment = null;
 
-                return true;
+                CharSequence title = item.getTitle();
+                if ("Anasayfa".equals(title)) {
+                    selectedFragment = new MainFragment();
+                } else if ("Favoriler".equals(title)) {
+                    selectedFragment = new FavoritesFragment();
+                } else if ("Mesajlar".equals(title)) {
+                    selectedFragment = new MessagesFragment();
+                } else if ("Profil".equals(title)) {
+                    selectedFragment = new ProfileFragment();
+                }
+
+                if (selectedFragment != null) {
+                    setFragmentToLayout(selectedFragment);
+
+                    return true;
+                }
+
+                return false;
             }
         });
+
+    }
+
+    private void setFragmentToLayout(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frameLayout, fragment)
+                .commit();
     }
 
 
@@ -86,7 +120,7 @@ public class MainAreaPage extends AppCompatActivity {
                 closeButton.setOnClickListener(v -> dialog.dismiss());
 
                 Button exitButton = dialog.findViewById(R.id.exit_button);
-
+                Button searchButton = dialog.findViewById(R.id.search_button);
 
                 exitButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -102,7 +136,20 @@ public class MainAreaPage extends AppCompatActivity {
                     }
                 });
 
+                searchButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setFragmentToLayout(new SearchFragment());
+                            }
+                        });
 
+                        dialog.dismiss();
+
+                    }
+                });
 
                 TextView username = dialog.findViewById(R.id.username);
 
@@ -234,11 +281,10 @@ public class MainAreaPage extends AppCompatActivity {
                 dropdownBudget.setAdapter(adapterOfBudget);
 
                 dialog.show();
-                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.getWindow().getAttributes().windowAnimations = R.style.ProfileAnimation;
-                dialog.getWindow().getExitTransition().setDuration(400);
-                //dialog.getWindow().setGravity(Gravity.RIGHT);
+                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                dialog.getWindow().setGravity(Gravity.BOTTOM);
             });
         } catch (Exception e) {
             e.printStackTrace();

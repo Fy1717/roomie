@@ -7,7 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
-    android:layout_marginLeft="36dp"
     android:background="@drawable/right_side_page_modal">
 
     <ImageView
@@ -34,6 +33,7 @@
         android:layout_height="50dp"
         android:gravity="center"
         android:text="USERNAME"
+        android:fontFamily="@font/poppins_semibold"
         android:textSize="20dp"
         app:layout_constraintEnd_toStartOf="@+id/close_button"
         app:layout_constraintStart_toEndOf="@+id/profile_image"
@@ -190,13 +190,15 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/search_button"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="48dp"
         android:background="@drawable/right_side_button_modal"
-        android:text="ARA"
+        android:text="Ara"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:textColor="@color/white"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
+        android:fontFamily="@font/poppins_semibold"
         app:layout_constraintBottom_toBottomOf="@+id/line2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -204,9 +206,11 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/exit_button"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="48dp"
         android:background="@drawable/right_side_button_modal"
-        android:text="ÇIKIŞ"
+        android:text="Çıkış"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_marginTop="10dp"

@@ -1,4 +1,4 @@
-package com.example.roomie.view;
+package com.example.roomie.view.pages;
 
 import android.os.Bundle;
 

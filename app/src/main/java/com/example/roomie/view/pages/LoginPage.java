@@ -1,4 +1,4 @@
-package com.example.roomie.view;
+package com.example.roomie.view.pages;
 
 
 import static com.example.roomie.service.ApiModel.ErrorHandlerModel.errorHandlerModel;
